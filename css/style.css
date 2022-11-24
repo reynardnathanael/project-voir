@@ -108,15 +108,16 @@ body {
 }
 
 .button-search {
-    border: 2px solid white;
-    padding: 3px;
-    border-radius: 5px;
+    background-color: brown;
+    padding: 7px 15px;
+    border-radius: 7px;
     margin-top: 5px;
     margin-bottom: 5px;
     margin-right: 16px;
-    background: none;
     font-size: 13px;
     color: white;
+    cursor: pointer;
+    text-decoration:none;
 }
 
 .theme {
@@ -240,6 +241,30 @@ body {
     box-shadow: 0 0 12px grey;
     border-radius: 20px;
     object-fit: cover;
+}
+
+.popular {
+    max-width: 100%;
+    max-height: 100%;
+    height: 60vh;
+    background-size: cover;
+    position: relative;
+    display: flex;
+}
+
+.popular ::before {
+    content: "";
+    background-image: url(../images/images.png);
+    background-size: cover;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 0.1;
+    border-radius:40px;
+    z-index: -100;
+    box-shadow: 0 0 12px grey;
 }
 
 .hr-end {
