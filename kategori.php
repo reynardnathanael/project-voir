@@ -16,6 +16,24 @@
             box-sizing: border-box;
         }
 
+        .popular1 {
+            max-width: 100%;
+            max-height: 100%;
+            height: 60vh;
+            background-size: cover;
+            position: relative;
+            display: flex;
+        }
+
+        .popular2 {
+            max-width: 100%;
+            max-height: 100%;
+            height: 60vh;
+            background-size: cover;
+            position: relative;
+            display: flex;
+        }
+
         .lbl {
             transition: transform 400ms ease-out;
             display: inline-block;
@@ -120,6 +138,18 @@
 </head>
 
 <body>
+    <?php
+        require("class/categories.php");
+        require("class/places.php");
+        $category = new Categories("localhost", "root", "", "local_culture");
+        $place = new Places("localhost", "root", "", "local_culture");
+        $id = $_POST['id'];
+        $res = $category->ShowCategoryByID($id);
+
+        if (!$row = $res->fetch_assoc()) {
+            die("Error Category id!");
+        }
+    ?>
     <nav class="bar-navigation navigation-height" style="background-color: rgb(165, 91, 42);">
         <img src="images/logo.png" alt="logo" class="logo">
 
@@ -141,8 +171,14 @@
     </nav>
 
     <section class="theme" id="home" style="height: 100vh;display:grid">
-        <div style="width:100%;overflow:hidden;border-radius:0 0 90vh 0;object-fit:cover">
-            <img src="images/candi_kategori.png" alt="" style="object-fit:cover;width:100%;height:100%;border-radius:0 0 90vh">
+        <div style="width:100%;overflow:hidden;border-radius:0 0 90vh 0;object-fit:cover;position:relative">
+            <img src="<?=$row['img']?>" alt="" style="object-fit:cover;width:100%;height:100%;border-radius:0 0 90vh;position:absolute">
+            <div style="background-color: rgba(0, 0, 0, 0.6); width:65%;height:90%;position:absolute;border-radius:0 0 90vh;padding:0 10% 0 3%">
+                <div style="position: relative;top: 50%;transform: translateY(-50%);">
+                    <h1 class="text-bg" style="font-size: 70px;color:white;display:block;"><?=$row['category']?></h1>
+                        <strong><p class="text-sm" style="text-align:left;color:white;line-height:25px"><?=$row['description']?></p></strong>
+                </div>
+            </div>
         </div>
     </section>
     <br><br>
@@ -150,23 +186,58 @@
         <section class="section-up">
             <p class="text-bg">Popular Destination</p>
         </section>
-        <section class="section-down" style="display: block;">
-            <div class="popular" style="padding-right:30px;">
-                <div style="height:100%;width:40%;margin-right:30px">
-                    <img src="images/images.png" style="height:100%; max-width:100%;object-fit:cover;border-radius:40px;">
+        <!-- <section class="section-down" style="display: block;"> -->
+            <?php
+                $showplaces = $place->ShowPlacesLimitTwo($id);
+                $counter = 1;
+                while ($row = $showplaces->fetch_assoc()) {
+                    echo "<style>";
+                    echo ".popular{$counter} ::before {
+                        content: \"\";
+                        background-image: url(". $row['image_url'] .");
+                        background-size: cover;
+                        position: absolute;
+                        top: 0px;
+                        right: 0px;
+                        bottom: 0px;
+                        left: 0px;
+                        opacity: 0.08;
+                        border-radius:40px;
+                        z-index: -100;
+                        box-shadow: 0 0 12px grey;
+                    }";
+                    echo "</style>";
+                    echo "<section class='section-down' style='display: block;'>";
+                    echo "<div class='popular{$counter}' style='padding-right:30px;'>";
+                    echo "<div style='height:100%;width:40%;margin-right:30px'>";
+                    echo "<img src='". $row['image_url'] ."' style='height:100%; max-width:100%;object-fit:cover;border-radius:40px;'>";
+                    echo "</div>";
+                    echo "<div style='height:100%;width:70%;margin-top:30px'>";
+                    echo "<p class='text-bg'>". $row['name'] ."</p>";
+                    echo "<p class='text-sm' style='text-align: left;line-height:25px'>". $row['description'] ."</p>";
+                    echo "<a class='button-search' style='position:absolute; bottom: 0; right:0;margin-right:30px;margin-bottom:30px' href='#'><strong>Details &#8594</strong></a>";
+                    echo "</div>";
+                    echo "</div>";
+                    echo "</section>";
+                    $counter++;
+                }
+            ?>
+            <!-- <div class="popular" style="padding-right:30px;">
+                <div style='height:100%;width:40%;margin-right:30px'>
+                    <img src='images/images.png' style='height:100%; max-width:100%;object-fit:cover;border-radius:40px;'>
                 </div>
-                <div style="height:100%;width:70%;margin-top:30px">
-                    <p class="text-bg">Candi Borobudur</p>
-                    <p class="text-sm" style="text-align: left;line-height:25px">Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Sed porttitor lectus nibh. Nulla quis lorem ut libero malesuada feugiat. Vivamus suscipit tortor eget felis porttitor volutpat. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <a class="button-search" style="position:absolute; bottom: 0; right:0;margin-right:30px;margin-bottom:30px" href="#"><strong>Details &#8594</strong></a>
+                <div style='height:100%;width:70%;margin-top:30px'>
+                    <p class='text-bg'>Candi Borobudur</p>
+                    <p class='text-sm' style='text-align: left;line-height:25px'>Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue leo eget malesuada. Sed porttitor lectus nibh. Nulla quis lorem ut libero malesuada feugiat. Vivamus suscipit tortor eget felis porttitor volutpat. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Vivamus suscipit tortor eget felis porttitor volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <a class='button-search' style='position:absolute; bottom: 0; right:0;margin-right:30px;margin-bottom:30px' href='#'><strong>Details &#8594</strong></a>
 
                 </div>
 
             </div>
         </section>
         <section class="section-down" style="display: block;">
-            <div class="popular"  style="z-index:-100">
-                <div style="height:100%;width:30%;">
+            <div class="popular" style="padding-right:30px;">
+                <div style="height:100%;width:40%;margin-right:30px">
                     <img src="images/image.png" style="height:100%; max-width:100%;object-fit:cover;border-radius:40px;">
                 </div>
                 <div style="height:100%;width:70%;margin-top:30px">
@@ -175,7 +246,7 @@
                     <a class="button-search" style="position:absolute; bottom: 0; right:0;margin-right:30px;margin-bottom:30px" href="#"><strong>Details &#8594</strong></a>
                 </div>
             </div>
-        </section>
+        </section> -->
     </section>
     <br>
     <br>

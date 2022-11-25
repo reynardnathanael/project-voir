@@ -15,6 +15,12 @@
             box-sizing: border-box;
         }
 
+        .carousel-content {
+            position: absolute; top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
         .lbl {
             transition: transform 400ms ease-out;
             display: inline-block;
@@ -119,6 +125,12 @@
 </head>
 
 <body>
+    <?php
+        require("class/categories.php");
+        require("class/places.php");
+        $category = new Categories("localhost", "root", "", "local_culture");
+        $place = new Places("localhost", "root", "", "local_culture");
+    ?>
     <nav class="bar-navigation navigation-height" style="background-color: rgb(165, 91, 42);">
         <img src="images/logo.png" alt="logo" class="logo">
 
@@ -144,22 +156,22 @@
             <div class="right-column">
                 <!-- <img src="images/lake.png" alt="Company Logo" style="width: 70%;"> -->
                 <form class="carousel">
-                    <input type="radio" name="fancy" autofocus value="clubs" id="clubs" />
-                    <input type="radio" name="fancy" value="hearts" id="hearts" />
-                    <input type="radio" name="fancy" value="spades" id="spades" />
-                    <input type="radio" name="fancy" value="diamonds" id="diamonds" />
-                    <label for="clubs" class="lbl">
-                        <img src="images/lake.png" alt="" style="max-width: 100%; max-height: 100%;">
-                    </label>
-                    <label for="hearts" class="lbl">
-                        <img src="images/lake.png" alt="" style="max-width: 100%; max-height: 100%;">
-                    </label>
-                    <label for="spades" class="lbl">
-                        <img src="images/lake.png" alt="" style="max-width: 100%; max-height: 100%;">
-                    </label>
-                    <label for="diamonds" class="lbl">
-                        <img src="images/lake.png" alt="" style="max-width: 100%; max-height: 100%;">
-                    </label>
+                    <input type="radio" name="fancy" autofocus value="1" id="1" />
+                    <input type="radio" name="fancy" value="2" id="2" />
+                    <input type="radio" name="fancy" value="3" id="3" />
+                    <input type="radio" name="fancy" value="4" id="4" />
+                    <?php
+                        $showplaces = $place->ShowPlacesLimitFour();
+                        $counter = 1;
+                        while ($row = $showplaces->fetch_assoc()) {
+                            echo "<label for='". $counter ."' class='lbl'>";
+                            echo "<img src='". $row['image_url'] ."' alt='' style='width:100%;height:100%;object-fit:cover;clear:both'>";
+                            echo "<h3 class='carousel-content' style='text-shadow: 0 0 10px black;'>". $row['name'] ."</h3>";
+                            echo "<button class='carousel-content button-search'><a href='https://google.com' style='color:white;text-decoration:none;height:100%;width:100%'>Read More &#8594</a></button>";
+                            echo "</label>";
+                            $counter++;
+                        }
+                    ?>
 
                 </form>
             </div>
@@ -171,21 +183,20 @@
             <p class="text-bg">Pick Your Category</p>
         </section>
         <section class="section-down">
-            <div class="thumbnail">
-                <img class="imgFluid" src="images/candi.jpg" alt="logo Image">
-            </div>
-            <div class="thumbnail">
-                <img class="imgFluid" src="images/pantai.jpg" alt="logo Image">
-            </div>
-            <div class="thumbnail">
-                <img class="imgFluid" src="images/air-terjun.jpg" alt="logo Image">
-            </div>
-            <div class="thumbnail">
-                <img class="imgFluid" src="images/gunung.jpg" alt="logo Image">
-            </div>
-            <div class="thumbnail">
-                <img class="imgFluid" src="images/gua.jpg" alt="logo Image">
-            </div>
+            <?php
+                $showcat = $category->ShowCategories();
+                $number = 1;
+                while ($row = $showcat->fetch_assoc()) {
+                    $formid = "kategori{$number}";
+                    echo "<div class='thumbnail'>";
+                    echo "<form id='{$formid}' action='kategori.php' method='POST'>";
+                    echo "<input type='hidden' name='id' value='". $row['id'] ."'>";
+                    echo "<a href='javascript:{}' onclick=\"document.getElementById('{$formid}').submit();\"><img class='imgFluid' src='". $row['img'] ."' alt='logo Image'></a>";
+                    echo "</form>";
+                    echo "</div>";
+                    $number++;
+                }
+            ?>
         </section>
     </section>
     <br>

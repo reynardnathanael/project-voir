@@ -118,6 +118,8 @@ body {
     color: white;
     cursor: pointer;
     text-decoration:none;
+    box-shadow: 0 0 12px black;
+    border: none;
 }
 
 .theme {
