@@ -8,6 +8,15 @@ require_once("koneksi.php");
             parent::__construct($server, $user, $pass, $db);
         }
         
+        public function ShowPlaceByID($id) {
+            $sql = "SELECT * FROM places WHERE id=?";
+            $stmt = $this->con->prepare($sql);
+            $stmt->bind_param('i',$id); 
+            $stmt->execute();
+            $res = $stmt->get_result();
+            return $res;
+        }
+
         public function ShowPlacesLimitFour() {
             $sql = "SELECT * FROM places group by categories_id order by rating asc LIMIT 4";
             $res = $this->con->query($sql);

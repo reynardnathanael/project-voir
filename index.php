@@ -135,8 +135,8 @@
         <img src="images/logo.png" alt="logo" class="logo">
 
         <ul class="list-navigation invisible">
-            <li><a class="hover-anim" href="#home">Home</a> </li>
-            <li><a class="hover-anim" href="#about">About</a></li>
+            <li><a class="hover-anim" href="#">Home</a> </li>
+            <li><a class="hover-anim" href="#category">Category</a></li>
             <li><a class="hover-anim" href="#service">Services</a></li>
             <li><a class="hover-anim" href="#contact-block">Contact</a></li>
         </ul>
@@ -178,23 +178,18 @@
         </div>
     </section>
 
-    <section>
+    <section id="category">
         <section class="section-up">
             <p class="text-bg">Pick Your Category</p>
         </section>
         <section class="section-down">
             <?php
                 $showcat = $category->ShowCategories();
-                $number = 1;
                 while ($row = $showcat->fetch_assoc()) {
-                    $formid = "kategori{$number}";
+                    $categoryid = $row['id'];
                     echo "<div class='thumbnail'>";
-                    echo "<form id='{$formid}' action='kategori.php' method='POST'>";
-                    echo "<input type='hidden' name='id' value='". $row['id'] ."'>";
-                    echo "<a href='javascript:{}' onclick=\"document.getElementById('{$formid}').submit();\"><img class='imgFluid' src='". $row['img'] ."' alt='logo Image'></a>";
-                    echo "</form>";
+                    echo "<a href='kategori.php?categoryid=$categoryid'><img class='imgFluid' src='". $row['img'] ."' alt='logo Image'></a>";
                     echo "</div>";
-                    $number++;
                 }
             ?>
         </section>
