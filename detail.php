@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Detail Tempat</title>
+    <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="leaflet/leaflet.css" type="text/css">
+    <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
     <script src="leaflet/leaflet.js" type="text/javascript"></script>
 
     <style>
@@ -43,9 +44,14 @@
         require("class/categories.php");
         require("class/places.php");
         require("class/funfacts.php");
+        require("class/events.php");
+        require("class/hotels.php");
+
         $category = new Categories("localhost", "root", "", "local_culture");
         $place = new Places("localhost", "root", "", "local_culture");
         $funfact = new Funfacts("localhost", "root", "", "local_culture");
+        $event = new Events("localhost", "root", "", "local_culture");
+        $hotel = new Hotels("localhost", "root", "", "local_culture");
 
         $id = $_GET['placeid'];
         $placeData = $place->ShowPlaceByID($id);
@@ -58,10 +64,10 @@
         <img src="images/logo.png" alt="logo" class="logo">
 
         <ul class="list-navigation invisible">
-            <li><a class="hover-anim" href="#">Home</a> </li>
-            <li><a class="hover-anim" href="#category">Category</a></li>
-            <li><a class="hover-anim" href="#service">Services</a></li>
-            <li><a class="hover-anim" href="#contact-block">Contact</a></li>
+            <li><a class="hover-anim" href="index.php">Home</a> </li>
+            <li><a class="hover-anim" href="index.php#category">Category</a></li>
+            <li><a class="hover-anim" href="index.php#events">Events</a></li>
+            <li><a class="hover-anim" href="index.php#search">Search</a></li>
         </ul>
         <!-- <div class="right-navigation invisible">
             <input type="text" name="search" id="search">
@@ -94,7 +100,15 @@
             <div class="left-column">
                 <p class="text-sm" style="text-align: left;color:black;margin-left:0;line-height:20px"><?=$rowPlace['description']?></p>
                 <br>
-                <a class="button-search" style="width:210px;text-align:center"><strong>Looking for accomodation? &#8594</strong></a>
+                <?php
+                    $cekhotel = $hotel->ShowHotelsLimit5($id);
+                    if (mysqli_num_rows($cekhotel)==0) {
+                        echo "<a id='failed' href='javascript:void(0)' class='button-search' style='width:210px;text-align:center'><strong>Looking for accomodation? &#8594</strong></a>";
+                    }
+                    else {
+                        echo "<a href='hotel.php?placeid=$id' class='button-search' style='width:210px;text-align:center'><strong>Looking for accomodation? &#8594</strong></a>";
+                    }
+                ?>
             </div>
             <div class="right-column" style="align-items: right;padding:0">
                 <div id="tempatpeta" style="height: 300px; width:400px;z-index:0;padding:0"></div>
@@ -116,7 +130,7 @@
             echo "<p class='text-bg'>".$row['title']."</p>";
             echo "</section>";
             echo "<section class='section-down' style='padding: 30px 10px;margin-top:0;padding-top:10px'>";
-            echo "<p class='text-sm' style='text-align: left;color:black;margin-left:0;margin-top:0;line-height:20px'>".$row['article']."</p>";
+            echo "<p class='text-sm' style='text-align: justify;color:black;margin-left:0;margin-top:0;line-height:20px'>".$row['article']."</p>";
             echo "</section>";
             echo "<section class='section-down' style='padding: 10px;height:70vh;object-fit:cover;margin-top:0;padding-top:0'>";
             echo "<img src='".$row['image_url']."' alt='' style='width: 100%; height: 100%;object-fit:cover'>";
@@ -125,6 +139,43 @@
             echo"<br><br>";
         }
     ?>
+
+    <section>
+        <section class="section-up">
+            <p class="text-bg">Events</p>
+        </section>
+        <section class="section-down">
+            <?php
+                $showevent = $event->ShowEventsByID($id);
+                if (mysqli_num_rows($showevent)==0) {
+                    echo "<span>Belum ada event yang berlangsung</span>";
+                }
+                else {
+                    while ($row = $showevent->fetch_assoc()) {
+                        $eventid = $row['id'];
+                        
+                        echo "<div class='cardEvents' style='margin:10px;height:fit-content;max-width:250px;'>";
+                        echo "<a href='event.php?eventid=$eventid'>";
+                        echo "<img src='". $row['image'] ."' style='width:100%;height:180px;object-fit:cover;'>";
+                        echo "</a>";
+                        echo "<div class='containerEvents'>";
+                        echo "<p style='font-size:13px;color:grey;margin-bottom:0'>". date("M Y", strtotime($row['date'])) ."<p>";
+                        echo "<h3 style='margin-top:0'><b>". $row['name'] ."</b></h3>";
+                        echo "<p>". substr($row['description'], 0, 100) . "..." ."</p>";
+                        echo "</div>";
+                        echo "</div>";
+                    }
+                }
+                
+            ?>
+        </section>
+    </section>
+
+    <script>
+        $(document).on("click", "#failed", function() {
+            alert( "Maaf, belum ada hotel yang tersedia" );
+        });
+    </script>
 
     <script>
         var map = L.map('tempatpeta').setView([<?php echo $rowPlace['setpoint'] ?>], 13.5);
@@ -160,12 +211,11 @@
             iconSize: [30, 40],
             iconAnchor: [15, 40],
         }); 
-        var place= L.marker([ -7.607586665754566, 110.2037512974074],{icon:myIcon}).bindPopup("<?php echo $rowPlace['name'] ?>").addTo(map);
-
+        var place= L.marker([ <?php echo $rowPlace['setpoint'] ?>],{icon:myIcon}).bindPopup("<?php echo $rowPlace['name'] ?>").addTo(map);
     </script>
 
     <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/jquery-3.5.1.min"></script>
+    <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
 </body>
 
 </html>

@@ -6,9 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kategori</title>
-    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/grid.css">
     <link rel="stylesheet" href="leaflet/leaflet.css" type="text/css">
+    <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
     <script src="leaflet/leaflet.js" type="text/javascript"></script>
 
     <style>
@@ -55,8 +56,8 @@
         <ul class="list-navigation invisible">
             <li><a class="hover-anim" href="index.php">Home</a> </li>
             <li><a class="hover-anim" href="index.php#category">Category</a></li>
-            <li><a class="hover-anim" href="#service">Services</a></li>
-            <li><a class="hover-anim" href="#contact-block">Contact</a></li>
+            <li><a class="hover-anim" href="index.php#events">Events</a></li>
+            <li><a class="hover-anim" href="index.php#search">Search</a></li>
         </ul>
         <!-- <div class="right-navigation invisible">
             <input type="text" name="search" id="search">
@@ -87,10 +88,12 @@
         </section>
         <!-- <section class="section-down" style="display: block;"> -->
             <?php
+                $arr = array();
                 $showplaces = $place->ShowPlacesLimitTwo($id);
                 $counter = 1;
                 while ($row = $showplaces->fetch_assoc()) {
                     $placeid = $row['id'];
+                    array_push($arr, $placeid);
                     echo "<style>";
                     echo ".popular{$counter} ::before {
                         content: \"\";
@@ -137,31 +140,26 @@
             <p class="text-bg">Recommended</p>
         </section>
         <section class="section-down" style="padding: 30px 10px;">
-            <main class="grid" style="width: 100%;">
-                    <div class="box">
-                        <a href=""><img src="images/candi.jpg" alt=""></a>
-                    </div>
-                    <div class="box">
-                        <a href=""><img src="images/candi.jpg" alt=""></a>
-                    </div>
-                    <div class="box">
-                        <a href=""><img src="images/candi.jpg" alt=""></a>
-                    </div>
-                    <div class="box">
-                        <a href=""><img src="images/candi.jpg" alt=""></a>
-                    </div>
-                    <div class="box">
-                        <a href=""><img src="images/candi.jpg" alt=""></a>
-                    </div>
-                    <div class="box">
-                        <a href=""><img src="images/candi.jpg" alt=""></a>
-                    </div>
-            </main>
+            <?php
+                $recom = $place->ShowPlacesLimitSix($id, $arr[0], $arr[1]);
+                if (mysqli_num_rows($recom)==0) {
+                    echo "<p>Belum ada rekomendasi</p>";
+                }
+                else {
+                    echo "<main class='grid' style='width: 100%;'>";
+                    while ($row2 = $recom->fetch_assoc()) {
+                            echo "<div class='box'>";
+                            echo "<a href='detail.php?placeid=".$row2['id']."'><img src='".$row2['image_url']."' alt=''></a>";
+                            echo "</div>";
+                        }
+                    echo "</main>";
+                }
+            ?>
         </section>
     </section>
 
     <script type="text/javascript" src="js/app.js"></script>
-    <script type="text/javascript" src="js/jquery-3.5.1.min"></script>
+    <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
 </body>
 
 </html>
