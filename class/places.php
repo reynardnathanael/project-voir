@@ -17,6 +17,16 @@ require_once("koneksi.php");
             return $res;
         }
 
+        public function ShowPlaceBySearch($input) {
+            $str = "%".$input."%";
+            $sql = "SELECT * FROM places WHERE name LIKE ?";
+            $stmt = $this->con->prepare($sql);
+            $stmt->bind_param('s',$str); 
+            $stmt->execute();
+            $res = $stmt->get_result();
+            return $res;
+        }
+
         public function ShowPlacesLimitFour() {
             $sql = "SELECT * FROM places group by categories_id order by rating asc LIMIT 4";
             $res = $this->con->query($sql);

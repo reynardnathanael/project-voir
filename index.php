@@ -16,8 +16,6 @@
             box-sizing: border-box;
         }
 
-        
-
         .carousel-content {
             position: absolute; top: 50%;
             left: 50%;
@@ -233,6 +231,35 @@
                     echo "</div>";
                     echo "</div>";
                 }
+            ?>
+        </section>
+    </section>
+
+    <br><br>
+    <hr>
+    <br><br>
+
+    <section id="search">
+        <section class="section-up">
+            <p class="text-bg">Search</p>
+            <form action="" method="get">
+                <input type="text" name="inputText" >
+                <input type="submit" name="search" value="Search">
+            </form>
+            <br> 
+        </section>
+        <section class="section-down">
+            <?php
+            if(isset($_GET['search'])){
+                $showplaces = $place->ShowPlaceBySearch($_GET['inputText']);
+                while ($row = $showplaces->fetch_assoc()) {
+                    $placeid = $row['id'];
+                    echo "<div class='thumbnail'>";
+                    echo "<a href='detail.php?placeid=$placeid' style='text-align:center;'><img class='imgFluid' src='". $row['image_url'] ."' alt='logo Image'>".$row['name']."</a>";
+                    echo "</div>";
+                }
+            }
+          
             ?>
         </section>
     </section>
