@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="css/grid.css">
     <link rel="stylesheet" href="leaflet/leaflet.css" type="text/css">
+    <script src="http://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
     <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
     <script src="leaflet/leaflet.js" type="text/javascript"></script>
 
@@ -82,6 +83,9 @@
         </div>
     </section>
     <br><br>
+    <section class="section-up">
+        <div class="button-search" style="background-color: #C4A484;cursor:default" id="google_element"></div>
+    </section>
     <section>
         <section class="section-up">
             <p class="text-bg">Popular Destination</p>
@@ -97,14 +101,14 @@
                     echo "<style>";
                     echo ".popular{$counter} ::before {
                         content: \"\";
-                        background-image: url(". $row['image_url'] .");
+                        background-image: url(". $row['image_url'] .") !important;
                         background-size: cover;
                         position: absolute;
                         top: 0px;
                         right: 0px;
                         bottom: 0px;
                         left: 0px;
-                        opacity: 0.08;
+                        opacity: 0.05;
                         border-radius:40px;
                         z-index: -100;
                         box-shadow: 0 0 12px grey;
@@ -117,7 +121,7 @@
                     echo "</div>";
                     echo "<div style='height:100%;width:70%;margin-top:30px'>";
                     echo "<p class='text-bg'>". $row['name'] ."</p>";
-                    echo "<p class='text-sm' style='text-align: left;line-height:25px'>". $row['description'] ."</p>";
+                    echo "<p class='text-sm' style='text-align: left;line-height:25px;text-shadow:0 0 5px white;'><b>". $row['description'] ."</b></p>";
                     echo "<a class='button-search' style='position:absolute; bottom: 0; right:0;margin-right:30px;margin-bottom:30px' href='detail.php?placeid=$placeid'><strong>Details &#8594</strong></a>";
                     echo "</div>";
                     echo "</div>";
@@ -158,6 +162,11 @@
         </section>
     </section>
 
+    <script>
+        function loadGoogleTranslate() {
+            new google.translate.TranslateElement("google_element");
+        }
+    </script>
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
 </body>

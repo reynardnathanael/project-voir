@@ -8,6 +8,7 @@
     <title>Detail Hotel</title>
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="leaflet/leaflet.css" type="text/css">
+    <script src="http://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
     <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
     <script src="leaflet/leaflet.js" type="text/javascript"></script>
 
@@ -78,6 +79,10 @@
     </section>
     <br><br>
 
+    <section class="section-up">
+        <div  class="button-search" style="background-color: #C4A484;cursor:default" id="google_element"></div>
+    </section>
+
     <section style="height:fit-content">
         <div class="container" style="margin-top: 0;">
             <div class="left-column">
@@ -94,6 +99,11 @@
     </section>
     <br><br>
 
+    <script>
+        function loadGoogleTranslate() {
+            new google.translate.TranslateElement("google_element");
+        }
+    </script>
     <script>
         var map = L.map('tempatpeta').setView([<?php echo $row['coordinat'] ?>], 13.5);
         var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {});

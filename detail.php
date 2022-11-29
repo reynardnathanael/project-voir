@@ -8,6 +8,7 @@
     <title>Detail Tempat</title>
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="leaflet/leaflet.css" type="text/css">
+    <script src="http://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
     <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
     <script src="leaflet/leaflet.js" type="text/javascript"></script>
 
@@ -92,6 +93,10 @@
         </div>
     </section>
 
+    <section class="section-up">
+        <div class="button-search" style="background-color: #C4A484;cursor:default" id="google_element"></div>
+    </section>
+
     <section style="height:fit-content">
         <div class="container" style="padding: 0;justify-content: left;align-items: left;margin-top:0">
             <p class="font-title" style="color: black;font-size: 70px;margin:0"><b><?=$rowPlace['name']?></b></p>
@@ -171,6 +176,11 @@
         </section>
     </section>
 
+    <script>
+        function loadGoogleTranslate() {
+            new google.translate.TranslateElement("google_element");
+        }
+    </script>
     <script>
         $(document).on("click", "#failed", function() {
             alert( "Maaf, belum ada hotel yang tersedia" );
