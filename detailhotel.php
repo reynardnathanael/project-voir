@@ -53,9 +53,9 @@
         }
     ?>
     <nav class="bar-navigation navigation-height" style="background-color: rgb(165, 91, 42);z-index:100">
-        <img src="images/logo.png" alt="logo" class="logo">
+        <img style="height: 60px;width:auto;margin:0" src="images/presure.png" alt="logo" class="logo">
 
-        <ul class="list-navigation invisible">
+        <ul class="list-navigation invisible" style="margin-top: 0;margin-bottom:0">
             <li><a class="hover-anim" href="index.php">Home</a> </li>
             <li><a class="hover-anim" href="index.php#category">Category</a></li>
             <li><a class="hover-anim" href="index.php#events">Events</a></li>

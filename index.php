@@ -136,9 +136,9 @@
         $event = new Events("localhost", "root", "", "local_culture");
     ?>
     <nav class="bar-navigation navigation-height" style="background-color: rgb(165, 91, 42);">
-        <img src="images/logo.png" alt="logo" class="logo">
+        <img style="height: 60px;width:auto;margin:0" src="images/presure.png" alt="logo" class="logo">
 
-        <ul class="list-navigation invisible">
+        <ul class="list-navigation invisible" style="margin-top: 0;margin-bottom:0">
             <li><a class="hover-anim" href="#">Home</a> </li>
             <li><a class="hover-anim" href="#category">Category</a></li>
             <li><a class="hover-anim" href="#events">Events</a></li>
