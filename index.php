@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Homepage</title>
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" href="leaflet/leaflet.css" type="text/css">
     <script src="http://translate.google.com/translate_a/element.js?cb=loadGoogleTranslate"></script>
@@ -18,7 +18,8 @@
         }
 
         .carousel-content {
-            position: absolute; top: 50%;
+            position: absolute;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
         }
@@ -128,12 +129,12 @@
 
 <body>
     <?php
-        require("class/categories.php");
-        require("class/places.php");
-        require("class/events.php");
-        $category = new Categories("localhost", "root", "", "local_culture");
-        $place = new Places("localhost", "root", "", "local_culture");
-        $event = new Events("localhost", "root", "", "local_culture");
+    require("class/categories.php");
+    require("class/places.php");
+    require("class/events.php");
+    $category = new Categories("localhost", "root", "", "local_culture");
+    $place = new Places("localhost", "root", "", "local_culture");
+    $event = new Events("localhost", "root", "", "local_culture");
     ?>
     <nav class="bar-navigation navigation-height" style="background-color: rgb(165, 91, 42);">
         <img style="height: 60px;width:auto;margin:0" src="images/presure.png" alt="logo" class="logo">
@@ -165,20 +166,20 @@
                     <input type="radio" name="fancy" value="3" id="3" />
                     <input type="radio" name="fancy" value="4" id="4" />
                     <?php
-                        $showplaces = $place->ShowPlacesLimitFour();
-                        $counter = 1;
-                        $arrayCoordinat = array();
-                        $arrayPlace = array();
-                        while ($row = $showplaces->fetch_assoc()) {
-                            array_push($arrayCoordinat, $row['setpoint']);
-                            array_push($arrayPlace, $row['name']);
-                            echo "<label for='". $counter ."' class='lbl'>";
-                            echo "<img src='". $row['image_url'] ."' alt='' style='width:100%;height:100%;object-fit:cover;clear:both'>";
-                            echo "<h3 class='carousel-content' style='text-shadow: 0 0 10px black;'>". $row['name'] ."</h3>";
-                            echo "<button class='carousel-content button-search'><a href='detail.php?placeid=".$row['id']."' style='color:white;text-decoration:none;height:100%;width:100%'>Read More &#8594</a></button>";
-                            echo "</label>";
-                            $counter++;
-                        }
+                    $showplaces = $place->ShowPlacesLimitFour();
+                    $counter = 1;
+                    $arrayCoordinat = array();
+                    $arrayPlace = array();
+                    while ($row = $showplaces->fetch_assoc()) {
+                        array_push($arrayCoordinat, $row['setpoint']);
+                        array_push($arrayPlace, $row['name']);
+                        echo "<label for='" . $counter . "' class='lbl'>";
+                        echo "<img src='" . $row['image_url'] . "' alt='' style='width:100%;height:100%;object-fit:cover;clear:both'>";
+                        echo "<h3 class='carousel-content' style='text-shadow: 0 0 10px black;'>" . $row['name'] . "</h3>";
+                        echo "<button class='carousel-content button-search'><a href='detail.php?placeid=" . $row['id'] . "' style='color:white;text-decoration:none;height:100%;width:100%'>Read More &#8594</a></button>";
+                        echo "</label>";
+                        $counter++;
+                    }
                     ?>
 
                 </form>
@@ -194,15 +195,32 @@
         <section class="section-up">
             <p class="text-bg">Pick Your Category</p>
         </section>
-        <section class="section-down">
+        <section id="section-down-category" class="section-down">
             <?php
-                $showcat = $category->ShowCategories();
-                while ($row = $showcat->fetch_assoc()) {
-                    $categoryid = $row['id'];
-                    echo "<div class='thumbnail'>";
-                    echo "<a href='kategori.php?categoryid=$categoryid'><img class='imgFluid' src='". $row['img'] ."' alt='logo Image'></a>";
-                    echo "</div>";
+            $showcat = $category->ShowCategories();
+            while ($row = $showcat->fetch_assoc()) {
+                $categoryid = $row['id'];
+                echo "<div class='thumbnail'>";
+                echo "<a href='kategori.php?categoryid=$categoryid'><img class='imgFluid' src='" . $row['img'] . "' alt='logo Image'></a>";
+                echo "</div>";
+            }
+            ?>
+        </section>
+        <section class="section-down1">
+            <?php
+            $showcat = $category->ShowCategories();
+            $count = 1;
+            while ($row = $showcat->fetch_assoc()) {
+                $categoryid = $row['id'];
+                if ($count == 4) {
+                    echo "<div id='section-down-category1'>";
                 }
+                echo "<div class='thumbnail'>";
+                echo "<a href='kategori.php?categoryid=$categoryid'><img class='imgFluid' src='" . $row['img'] . "' alt='logo Image'></a>";
+                echo "</div>";
+                $count++;
+            }
+            echo "</div>";
             ?>
         </section>
     </section>
@@ -221,21 +239,21 @@
         </section>
         <section class="section-down">
             <?php
-                $showevent = $event->ShowEventsLimitFour();
-                while ($row = $showevent->fetch_assoc()) {
-                    $eventid = $row['id'];
-                    
-                    echo "<div class='cardEvents' style='margin:10px;height:fit-content;'>";
-                    echo "<a href='event.php?eventid=$eventid'>";
-                    echo "<img src='". $row['image'] ."' style='width:100%;height:180px;object-fit:cover;'>";
-                    echo "</a>";
-                    echo "<div class='containerEvents'>";
-                    echo "<p style='font-size:13px;color:grey;margin-bottom:0'>". date("M Y", strtotime($row['date'])) ."<p>";
-                    echo "<h3 style='margin-top:0'><b>". $row['name'] ."</b></h3>";
-                    echo "<p>". substr($row['description'], 0, 100) . "..." ."</p>";
-                    echo "</div>";
-                    echo "</div>";
-                }
+            $showevent = $event->ShowEventsLimitFour();
+            while ($row = $showevent->fetch_assoc()) {
+                $eventid = $row['id'];
+
+                echo "<div class='cardEvents' style='margin:10px;height:fit-content;'>";
+                echo "<a href='event.php?eventid=$eventid'>";
+                echo "<img src='" . $row['image'] . "' style='width:100%;height:180px;object-fit:cover;'>";
+                echo "</a>";
+                echo "<div class='containerEvents'>";
+                echo "<p style='font-size:13px;color:grey;margin-bottom:0'>" . date("M Y", strtotime($row['date'])) . "<p>";
+                echo "<h3 style='margin-top:0'><b>" . $row['name'] . "</b></h3>";
+                echo "<p>" . substr($row['description'], 0, 100) . "..." . "</p>";
+                echo "</div>";
+                echo "</div>";
+            }
             ?>
         </section>
     </section>
@@ -248,23 +266,23 @@
         <section class="section-up">
             <p class="text-bg">Search</p>
             <form action="" method="get">
-                <input type="text" name="inputText" >
+                <input type="text" name="inputText">
                 <input type="submit" name="search" value="Search">
             </form>
-            <br> 
+            <br>
         </section>
         <section class="section-down">
             <?php
-            if(isset($_GET['search'])){
+            if (isset($_GET['search'])) {
                 $showplaces = $place->ShowPlaceBySearch($_GET['inputText']);
                 while ($row = $showplaces->fetch_assoc()) {
                     $placeid = $row['id'];
                     echo "<div class='thumbnail'>";
-                    echo "<a href='detail.php?placeid=$placeid' style='text-align:center;'><img class='imgFluid' src='". $row['image_url'] ."' alt='logo Image'>".$row['name']."</a>";
+                    echo "<a href='detail.php?placeid=$placeid' style='text-align:center;'><img class='imgFluid' src='" . $row['image_url'] . "' alt='logo Image'>" . $row['name'] . "</a>";
                     echo "</div>";
                 }
             }
-          
+
             ?>
         </section>
     </section>
@@ -312,24 +330,31 @@
         });
 
         var baseMaps = {
-			"OpenStreetMap": osm,
-			"Google Street":googleStreets,
-			"Google Satellite": googleSat,
-			"Google Hybrid":googleHybrid
-		};
-        
+            "OpenStreetMap": osm,
+            "Google Street": googleStreets,
+            "Google Satellite": googleSat,
+            "Google Hybrid": googleHybrid
+        };
+
         L.control.layers(baseMaps).addTo(map);
 
         var myIcon = L.icon({
             iconUrl: 'images/places.png',
             iconSize: [30, 40],
             iconAnchor: [15, 40],
-        }); 
-        var place1= L.marker([ <?php echo $arrayCoordinat[0] ?>],{icon:myIcon}).bindPopup("<?php echo $arrayPlace[0] ?>").addTo(map);
-        var place2= L.marker([ <?php echo $arrayCoordinat[1] ?>],{icon:myIcon}).bindPopup("<?php echo $arrayPlace[1] ?>").addTo(map);
-        var place3= L.marker([ <?php echo $arrayCoordinat[2] ?>],{icon:myIcon}).bindPopup("<?php echo $arrayPlace[2] ?>").addTo(map);
-        var place4= L.marker([ <?php echo $arrayCoordinat[3] ?>],{icon:myIcon}).bindPopup("<?php echo $arrayPlace[3] ?>").addTo(map);
-
+        });
+        var place1 = L.marker([<?php echo $arrayCoordinat[0] ?>], {
+            icon: myIcon
+        }).bindPopup("<?php echo $arrayPlace[0] ?>").addTo(map);
+        var place2 = L.marker([<?php echo $arrayCoordinat[1] ?>], {
+            icon: myIcon
+        }).bindPopup("<?php echo $arrayPlace[1] ?>").addTo(map);
+        var place3 = L.marker([<?php echo $arrayCoordinat[2] ?>], {
+            icon: myIcon
+        }).bindPopup("<?php echo $arrayPlace[2] ?>").addTo(map);
+        var place4 = L.marker([<?php echo $arrayCoordinat[3] ?>], {
+            icon: myIcon
+        }).bindPopup("<?php echo $arrayPlace[3] ?>").addTo(map);
     </script>
 
     <script type="text/javascript" src="js/app.js"></script>
