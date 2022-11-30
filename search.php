@@ -126,18 +126,6 @@
     </section>
 
 
-    <!-- <section>
-        <section class="section-up">
-            <p class="text-bg">Maps</p>
-        </section>
-    </section>
-    <br><br>
-    <div id="tempatpeta" class="section-down" style="height: 500px;"></div>
-
-    <div class="hr-end">
-        <hr>
-    </div> -->
-
     <br><br>
     <script>
         function loadGoogleTranslate() {
