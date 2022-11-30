@@ -175,7 +175,9 @@
                         array_push($arrayPlace, $row['name']);
                         echo "<label for='" . $counter . "' class='lbl'>";
                         echo "<img src='" . $row['image_url'] . "' alt='' style='width:100%;height:100%;object-fit:cover;clear:both'>";
-                        echo "<h3 class='carousel-content' style='text-shadow: 0 0 10px black;'>" . $row['name'] . "</h3>";
+                        echo "<h3 class='carousel-content carousel-big' style='text-shadow: 0 0 10px black;'>" . $row['name'] . "</h3>";
+                        echo "<h5 class='carousel-content carousel-medium' style='text-shadow: 0 0 10px black;'>" . $row['name'] . "</h5>";
+                        echo "<h6 class='carousel-content carousel-small' style='text-shadow: 0 0 10px black;'>" . $row['name'] . "</h6>";
                         echo "<button class='carousel-content button-search'><a href='detail.php?placeid=" . $row['id'] . "' style='color:white;text-decoration:none;height:100%;width:100%'>Read More &#8594</a></button>";
                         echo "</label>";
                         $counter++;

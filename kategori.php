@@ -40,16 +40,16 @@
 
 <body>
     <?php
-        require("class/categories.php");
-        require("class/places.php");
-        $category = new Categories("localhost", "root", "", "local_culture");
-        $place = new Places("localhost", "root", "", "local_culture");
-        $id = $_GET['categoryid'];
-        $res = $category->ShowCategoryByID($id);
+    require("class/categories.php");
+    require("class/places.php");
+    $category = new Categories("localhost", "root", "", "local_culture");
+    $place = new Places("localhost", "root", "", "local_culture");
+    $id = $_GET['categoryid'];
+    $res = $category->ShowCategoryByID($id);
 
-        if (!$row = $res->fetch_assoc()) {
-            die("Error Category id!");
-        }
+    if (!$row = $res->fetch_assoc()) {
+        die("Error Category id!");
+    }
     ?>
     <nav class="bar-navigation navigation-height" style="background-color: rgb(165, 91, 42);">
         <img style="height: 60px;width:auto;margin:0" src="images/presure.png" alt="logo" class="logo">
@@ -71,37 +71,40 @@
         </div>
     </nav>
 
-    <section class="theme" id="home" style="height: 100vh;display:grid">
-        <div style="width:100%;overflow:hidden;border-radius:0 0 90vh 0;object-fit:cover;position:relative">
-            <img src="<?=$row['img']?>" alt="" style="object-fit:cover;width:100%;height:100%;border-radius:0 0 90vh;position:absolute">
-            <div style="background-color: rgba(0, 0, 0, 0.6); width:65%;height:90%;position:absolute;border-radius:0 0 90vh;padding:0 10% 0 3%">
-                <div style="position: relative;top: 50%;transform: translateY(-50%);">
-                    <h1 class="text-bg" style="font-size: 70px;color:white;display:block;"><?=$row['category']?></h1>
-                        <strong><p class="text-sm" style="text-align:left;color:white;line-height:25px"><?=$row['description']?></p></strong>
+    <section class="theme" id="home" style="height: 100vh; display:grid">
+        <div style="width:100%; overflow:hidden; border-radius:0 0 90vh 0; object-fit:cover; position:relative;">
+            <img src="<?= $row['img'] ?>" alt="" style="object-fit:cover; width:100%; height:100%; border-radius:0 0 90vh; position:absolute">
+            <div style="background-color: rgba(0, 0, 0, 0.6); width:65%; height:90%; position:absolute; border-radius:0 0 90vh; padding:0 10% 0 3%;">
+                <div style="position: relative;top: 50%; transform: translateY(-50%); ">
+                    <h1 class="text-bg" style="font-size: 70px; color:white; display:block;"><?= $row['category'] ?></h1>
+                    <strong>
+                        <p class="text-sm" style="text-align:left; color:white; line-height:25px;"><?= $row['description'] ?></p>
+                    </strong>
                 </div>
             </div>
         </div>
     </section>
     <br><br>
     <section class="section-up">
-        <div class="button-search" style="background-color: #C4A484;cursor:default" id="google_element"></div>
+        <div class="button-search" style="background-color: #C4A484; cursor:default" id="google_element"></div>
     </section>
     <section>
         <section class="section-up">
             <p class="text-bg">Popular Destination</p>
         </section>
         <!-- <section class="section-down" style="display: block;"> -->
-            <?php
-                $arr = array();
-                $showplaces = $place->ShowPlacesLimitTwo($id);
-                $counter = 1;
-                while ($row = $showplaces->fetch_assoc()) {
-                    $placeid = $row['id'];
-                    array_push($arr, $placeid);
-                    echo "<style>";
-                    echo ".popular{$counter} ::before {
+        <?php
+        $arr = array();
+        $showplaces = $place->ShowPlacesLimitTwo($id);
+        $counter = 1;
+        while ($row = $showplaces->fetch_assoc()) {
+            $placeid = $row['id'];
+            array_push($arr, $placeid);
+
+            echo "<style>";
+            echo ".popular{$counter} ::before {
                         content: \"\";
-                        background-image: url(". $row['image_url'] .") !important;
+                        background-image: url(" . $row['image_url'] . ") !important;
                         background-size: cover;
                         position: absolute;
                         top: 0px;
@@ -113,22 +116,35 @@
                         z-index: -100;
                         box-shadow: 0 0 12px grey;
                     }";
-                    echo "</style>";
-                    echo "<section class='section-down' style='display: block;'>";
-                    echo "<div class='popular{$counter}' style='padding-right:30px;'>";
-                    echo "<div style='height:100%;width:40%;margin-right:30px'>";
-                    echo "<img src='". $row['image_url'] ."' style='height:100%; max-width:100%;object-fit:cover;border-radius:40px;'>";
-                    echo "</div>";
-                    echo "<div style='height:100%;width:70%;margin-top:30px'>";
-                    echo "<p class='text-bg'>". $row['name'] ."</p>";
-                    echo "<p class='text-sm' style='text-align: left;line-height:25px;text-shadow:0 0 5px white;'><b>". $row['description'] ."</b></p>";
-                    echo "<a class='button-search' style='position:absolute; bottom: 0; right:0;margin-right:30px;margin-bottom:30px' href='detail.php?placeid=$placeid'><strong>Details &#8594</strong></a>";
-                    echo "</div>";
-                    echo "</div>";
-                    echo "</section>";
-                    $counter++;
+            echo "</style>";
+
+            echo "<section class='section-down' style='display: block;'>";
+            echo "<div class='popular{$counter}' style='padding-right:30px;'>";
+            echo "<div style='height:100%;width:40%;margin-right:30px'>";
+            echo "<img src='" . $row['image_url'] . "' style='height:100%; max-width:100%;object-fit:cover;border-radius:40px;'>";
+            echo "</div>";
+            echo "<div style='height:100%;width:70%;margin-top:30px'>";
+            echo "<p class='text-bg'>" . $row['name'] . "</p>";
+
+            echo "<p class='text-sm normal' style='text-align: left; line-height:25px; text-shadow:0 0 5px white;'><b>" . $row['description'] . "</b></p>";
+            $description = "";
+            $arrDescription = explode(' ', $row['description']);
+            for ($i = 0; $i < 50; $i++) {
+                if ($i == 49){
+                    $description .= $arrDescription[$i]." ...";
+                }else{
+                    $description .= $arrDescription[$i] . " ";
                 }
-            ?>
+            }
+            echo "<p class='text-sm medium' style='text-align: left; line-height:25px; text-shadow:0 0 5px white;'><b>" . $description . "</b></p>";
+
+            echo "<a class='button-search' style='position:absolute; bottom: 0; right:0; margin-right:30px; margin-bottom:30px' href='detail.php?placeid=$placeid'><strong>Details &#8594</strong></a>";
+            echo "</div>";
+            echo "</div>";
+            echo "</section>";
+            $counter++;
+        }
+        ?>
     </section>
     <br>
     <br>
@@ -145,19 +161,18 @@
         </section>
         <section class="section-down" style="padding: 30px 10px;">
             <?php
-                $recom = $place->ShowPlacesLimitSix($id, $arr[0], $arr[1]);
-                if (mysqli_num_rows($recom)==0) {
-                    echo "<p>Belum ada rekomendasi</p>";
+            $recom = $place->ShowPlacesLimitSix($id, $arr[0], $arr[1]);
+            if (mysqli_num_rows($recom) == 0) {
+                echo "<p>Belum ada rekomendasi</p>";
+            } else {
+                echo "<main class='grid' style='width: 100%;'>";
+                while ($row2 = $recom->fetch_assoc()) {
+                    echo "<div class='box'>";
+                    echo "<a href='detail.php?placeid=" . $row2['id'] . "'><img src='" . $row2['image_url'] . "' alt=''></a>";
+                    echo "</div>";
                 }
-                else {
-                    echo "<main class='grid' style='width: 100%;'>";
-                    while ($row2 = $recom->fetch_assoc()) {
-                            echo "<div class='box'>";
-                            echo "<a href='detail.php?placeid=".$row2['id']."'><img src='".$row2['image_url']."' alt=''></a>";
-                            echo "</div>";
-                        }
-                    echo "</main>";
-                }
+                echo "</main>";
+            }
             ?>
         </section>
     </section>

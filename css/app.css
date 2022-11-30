@@ -311,6 +311,18 @@ hr {
     flex-direction: row-reverse;
 }
 
+.medium{
+    display: none;
+}
+
+.carousel-medium{
+    display: none;
+}
+
+.carousel-small{
+    display: none;
+}
+
 /* responsive tools */
 @media only screen and (max-width: 768px) {
     .bar-navigation {
@@ -389,6 +401,13 @@ hr {
         min-width: 200px;
     }
 
+    .normal{
+        display: none;
+    }
+    
+    .medium{
+        display: initial;
+    }
 }
 
 @media only screen and (min-width: 769px) and (max-width: 874px){
@@ -410,5 +429,29 @@ hr {
     
     .section-down1{
         display: flex;
+    }
+}
+
+@media only screen and (max-width:425px){
+    .carousel-big{
+        display: none;
+    }
+
+    .carousel-medium{
+        display: initial;
+    }
+}
+
+@media only screen and (max-width: 375px){
+    .carousel-big{
+        display: none;
+    }
+
+    .carousel-medium{
+        display: none;
+    }
+
+    .carousel-small{
+        display: initial;
     }
 }
